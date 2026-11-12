@@ -1,0 +1,101 @@
+{
+  "seed": 42,
+  "data": "synthetic; injected target ERP",
+  "sampling_hz": 250,
+  "trials": 119,
+  "train_trials": 89,
+  "test_trials": 30,
+  "class_counts": {
+    "1": 96,
+    "2": 23
+  },
+  "models": {
+    "majority_baseline": {
+      "accuracy": 0.8,
+      "balanced_accuracy": 0.5,
+      "target_f1": 0.0,
+      "roc_auc": 0.5,
+      "cv_balanced_accuracy_mean": 0.5,
+      "cv_balanced_accuracy_std": 0.0,
+      "confusion_matrix": [
+        [
+          24,
+          0
+        ],
+        [
+          6,
+          0
+        ]
+      ]
+    },
+    "temporal_pca_logistic": {
+      "accuracy": 1.0,
+      "balanced_accuracy": 1.0,
+      "target_f1": 1.0,
+      "roc_auc": 1.0,
+      "cv_balanced_accuracy_mean": 1.0,
+      "cv_balanced_accuracy_std": 0.0,
+      "confusion_matrix": [
+        [
+          24,
+          0
+        ],
+        [
+          0,
+          6
+        ]
+      ]
+    },
+    "temporal_linear_svm": {
+      "accuracy": 1.0,
+      "balanced_accuracy": 1.0,
+      "target_f1": 1.0,
+      "roc_auc": 1.0,
+      "cv_balanced_accuracy_mean": 0.9416666666666667,
+      "cv_balanced_accuracy_std": 0.07264831572567791,
+      "confusion_matrix": [
+        [
+          24,
+          0
+        ],
+        [
+          0,
+          6
+        ]
+      ]
+    },
+    "bandpower_random_forest": {
+      "accuracy": 0.8333333333333334,
+      "balanced_accuracy": 0.6458333333333334,
+      "target_f1": 0.4444444444444444,
+      "roc_auc": 0.7743055555555555,
+      "cv_balanced_accuracy_mean": 0.6009523809523809,
+      "cv_balanced_accuracy_std": 0.12063559941329505,
+      "confusion_matrix": [
+        [
+          23,
+          1
+        ],
+        [
+          4,
+          2
+        ]
+      ]
+    }
+  },
+  "shuffled_label_cv_balanced_accuracy": [
+    0.43333333333333335,
+    0.6,
+    0.39285714285714285,
+    0.5,
+    0.32142857142857145
+  ],
+  "python": "3.14.3",
+  "versions": {
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "mne": "1.13.2",
+    "scikit-learn": "1.9.1",
+    "matplotlib": "3.11.2"
+  }
+}
