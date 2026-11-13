@@ -8,6 +8,10 @@ A practical Python project exploring how EEG-like signals move from preprocessin
 
 ![Synthetic EEG processing and classification](results/overview.png)
 
+![ROC curves comparing four models on 30 held-out synthetic EEG trials](results/roc_curve.png)
+
+Curves closer to the top-left corner detect more targets with fewer false alarms. Both time-based models reached AUC 1.000 on these 30 simulated test trials; the bandpower model reached 0.774, while the always-standard baseline scored 0.500 (chance-level ranking). These results describe deliberately simplified synthetic data, not real-world EEG performance. See the [plain-language results](results/RESULTS.md#results-in-plain-language) for details.
+
 ## Skills demonstrated
 
 | Area | Evidence |
@@ -30,7 +34,7 @@ python -m pip install -r requirements.txt
 python run_demo.py
 ```
 
-The command regenerates `results/metrics.json`, `results/RESULTS.md`, and `results/overview.png`. It uses simulated data only, needs no EEG hardware or external dataset, and opens no plot windows.
+The command regenerates `results/metrics.json`, `results/RESULTS.md`, `results/overview.png`, and `results/roc_curve.png`. The [results page](results/RESULTS.md) includes a ROC comparison and a plain-language explanation of the findings. It uses simulated data only, needs no EEG hardware or external dataset, and opens no plot windows.
 
 ## Method at a glance
 

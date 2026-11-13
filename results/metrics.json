@@ -15,6 +15,16 @@
       "balanced_accuracy": 0.5,
       "target_f1": 0.0,
       "roc_auc": 0.5,
+      "roc_curve": {
+        "false_positive_rate": [
+          0.0,
+          1.0
+        ],
+        "true_positive_rate": [
+          0.0,
+          1.0
+        ]
+      },
       "cv_balanced_accuracy_mean": 0.5,
       "cv_balanced_accuracy_std": 0.0,
       "confusion_matrix": [
@@ -33,6 +43,20 @@
       "balanced_accuracy": 1.0,
       "target_f1": 1.0,
       "roc_auc": 1.0,
+      "roc_curve": {
+        "false_positive_rate": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "true_positive_rate": [
+          0.0,
+          0.16666666666666666,
+          1.0,
+          1.0
+        ]
+      },
       "cv_balanced_accuracy_mean": 1.0,
       "cv_balanced_accuracy_std": 0.0,
       "confusion_matrix": [
@@ -51,6 +75,20 @@
       "balanced_accuracy": 1.0,
       "target_f1": 1.0,
       "roc_auc": 1.0,
+      "roc_curve": {
+        "false_positive_rate": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "true_positive_rate": [
+          0.0,
+          0.16666666666666666,
+          1.0,
+          1.0
+        ]
+      },
       "cv_balanced_accuracy_mean": 0.9416666666666667,
       "cv_balanced_accuracy_std": 0.07264831572567791,
       "confusion_matrix": [
@@ -69,6 +107,44 @@
       "balanced_accuracy": 0.6458333333333334,
       "target_f1": 0.4444444444444444,
       "roc_auc": 0.7743055555555555,
+      "roc_curve": {
+        "false_positive_rate": [
+          0.0,
+          0.041666666666666664,
+          0.041666666666666664,
+          0.08333333333333333,
+          0.20833333333333334,
+          0.20833333333333334,
+          0.3333333333333333,
+          0.4166666666666667,
+          0.5,
+          0.5416666666666666,
+          0.625,
+          0.7916666666666666,
+          0.875,
+          0.9583333333333334,
+          0.9583333333333334,
+          1.0
+        ],
+        "true_positive_rate": [
+          0.0,
+          0.0,
+          0.5,
+          0.6666666666666666,
+          0.6666666666666666,
+          0.8333333333333334,
+          0.8333333333333334,
+          0.8333333333333334,
+          0.8333333333333334,
+          0.8333333333333334,
+          0.8333333333333334,
+          0.8333333333333334,
+          0.8333333333333334,
+          0.8333333333333334,
+          1.0,
+          1.0
+        ]
+      },
       "cv_balanced_accuracy_mean": 0.6009523809523809,
       "cv_balanced_accuracy_std": 0.12063559941329505,
       "confusion_matrix": [
@@ -92,10 +168,10 @@
   ],
   "python": "3.14.3",
   "versions": {
-    "numpy": "2.5.3",
-    "scipy": "1.18.1",
-    "mne": "1.13.2",
+    "numpy": "2.4.4",
+    "scipy": "1.17.1",
+    "mne": "1.12.1",
     "scikit-learn": "1.9.1",
-    "matplotlib": "3.11.2"
+    "matplotlib": "3.10.9"
   }
 }

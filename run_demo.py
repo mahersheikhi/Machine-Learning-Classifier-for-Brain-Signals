@@ -15,7 +15,7 @@ from sklearn.dummy import DummyClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import (accuracy_score, balanced_accuracy_score,
-                             confusion_matrix, f1_score, roc_auc_score)
+                             confusion_matrix, f1_score, roc_auc_score, roc_curve)
 from sklearn.model_selection import StratifiedKFold, cross_val_score, train_test_split
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
@@ -88,11 +88,14 @@ def main():
         pred = model.predict(features[test])
         score = (model.decision_function(features[test]) if hasattr(model, "decision_function")
                  else model.predict_proba(features[test])[:, list(model.classes_).index(2)])
+        fpr, tpr, _ = roc_curve(y[test], score, pos_label=2)
         metrics[name] = {
             "accuracy": float(accuracy_score(y[test], pred)),
             "balanced_accuracy": float(balanced_accuracy_score(y[test], pred)),
             "target_f1": float(f1_score(y[test], pred, pos_label=2, zero_division=0)),
             "roc_auc": float(roc_auc_score(y[test] == 2, score)),
+            "roc_curve": {"false_positive_rate": fpr.tolist(),
+                          "true_positive_rate": tpr.tolist()},
             "cv_balanced_accuracy_mean": float(scores.mean()),
             "cv_balanced_accuracy_std": float(scores.std()),
             "confusion_matrix": confusion_matrix(y[test], pred, labels=[1, 2]).tolist(),
@@ -133,6 +136,30 @@ def main():
     fig.suptitle("BCI portfolio — synthetic educational experiment", fontsize=16)
     fig.savefig(OUT / "overview.png", dpi=160)
     plt.close(fig)
+    model_labels = {
+        "majority_baseline": "Always predict standard",
+        "temporal_pca_logistic": "PCA + logistic regression",
+        "temporal_linear_svm": "Linear SVM",
+        "bandpower_random_forest": "Bandpower + random forest",
+    }
+    fig, ax = plt.subplots(figsize=(8, 7), constrained_layout=True)
+    # Distinct line styles keep overlapping curves visible.
+    for (name, values), style in zip(metrics.items(), [":", "-", "--", "-."]):
+        curve = values["roc_curve"]
+        ax.plot(curve["false_positive_rate"], curve["true_positive_rate"],
+                linestyle=style, linewidth=2,
+                label=f"{model_labels[name]} (AUC = {values['roc_auc']:.3f})")
+    ax.plot([0, 1], [0, 1], color="gray", linestyle="--", alpha=.5,
+            label="Chance-level ranking (AUC = 0.500)", zorder=0)
+    ax.set(xlim=(-.02, 1.02), ylim=(-.02, 1.02),
+           xlabel="False alarm rate (standard trials flagged as targets)",
+           ylabel="Target detection rate (targets correctly flagged)",
+           title=f"ROC curves: {len(test)} held-out synthetic EEG trials")
+    ax.set_aspect("equal")
+    ax.grid(alpha=.2)
+    ax.legend(loc="lower right", fontsize=9)
+    fig.savefig(OUT / "roc_curve.png", dpi=160)
+    plt.close(fig)
     rows = ["| Model | Accuracy | Balanced accuracy | Target F1 | ROC AUC | Train CV BA (mean ± SD) |",
             "|---|---:|---:|---:|---:|---:|"]
     for name, v in metrics.items():
@@ -147,6 +174,26 @@ def main():
         + "Models and hyperparameters were fixed before evaluation. CV uses only the training partition. "
         + "The holdout compares these fixed baselines; it should not be reused for tuning. "
         + "These results assess this simulator only, not performance on human EEG.\n\n"
+        + "## Results in plain language\n\n"
+        + f"The PCA + logistic regression model correctly classified all {len(test)} test trials "
+        + f"({cm[1, 1]} targets and {cm[0, 0]} standard events); the linear SVM also achieved "
+        + f"{metrics['temporal_linear_svm']['accuracy']:.0%} accuracy. "
+        + f"Always guessing 'standard' achieved {metrics['majority_baseline']['accuracy']:.0%} accuracy "
+        + "because most events were standard, but it missed every target. "
+        + f"The bandpower model achieved {metrics['bandpower_random_forest']['accuracy']:.0%} accuracy "
+        + "and missed some targets, suggesting that the signal's shape over time was more useful "
+        + "here than its frequency summary. These strong scores come from a small, deliberately "
+        + "simplified simulation and do not show how well the models would work on real people.\n\n"
+        + "## Reading the ROC curve\n\n"
+        + "![ROC curves for all four models on held-out trials](roc_curve.png)\n\n"
+        + "Each curve shows the trade-off as we change how easily a model flags an event as a target: "
+        + "moving upward means finding more targets, while moving right means raising more false alarms. "
+        + "Curves closer to the top-left corner are better; AUC summarizes this ranking ability "
+        + "(1.0 means perfect separation on these test trials, while 0.5 means chance-level ranking). "
+        + f"The two time-based models both reached AUC {metrics['temporal_pca_logistic']['roc_auc']:.3f} "
+        + "and overlap on this chart; the bandpower model reached "
+        + f"{metrics['bandpower_random_forest']['roc_auc']:.3f}, and the always-standard baseline "
+        + "lies on the chance diagonal.\n\n"
         + "![Signal processing and evaluation](overview.png)\n", encoding="utf-8")
     print(json.dumps(report, indent=2))
 

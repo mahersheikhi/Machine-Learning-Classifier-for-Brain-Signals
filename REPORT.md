@@ -41,6 +41,10 @@ See the generated [results table](results/RESULTS.md) and [full metrics and soft
 
 The majority baseline illustrates why accuracy alone can mislead when approximately 80% of trials are standards. Balanced accuracy gives equal weight to both class recalls, while target F1 exposes failure to detect the minority class. A strong score on injected synthetic responses verifies that this particular computational example is learnable; it is not evidence of successful decoding in a real participant.
 
+![ROC comparison on held-out synthetic trials](results/roc_curve.png)
+
+The ROC curve shows how finding more targets can also lead to more false alarms as the decision threshold changes; the top-left corner represents finding every target without any false alarms. AUC summarizes how well a model ranks targets above standard events: 1.0 means perfect separation on the test sample, and 0.5 means chance-level ranking. Here, both time-based models separated the test classes perfectly, while the bandpower model was less effective and the always-standard baseline provided no separation. These results describe a small simulation with an injected target response, so they do not establish performance on real human EEG. See the [plain-language results](results/RESULTS.md#results-in-plain-language) for the trial counts and model comparison.
+
 ## Review of the original labs
 
 - The original event labels are randomly assigned to a signal without a corresponding target ERP. Classification scores from those labels should not be described as validated P300 detection.
